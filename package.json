@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
+    "dev:3050": "tsx server.ts --port 3050",
     "start": "tsx server.ts",
     "build": "vite build",
     "preview": "vite preview",

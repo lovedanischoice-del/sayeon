@@ -20,7 +20,11 @@ from qc_checker import QCChecker
 
 class StoryShortsWorker:
     def __init__(self, server_url: str, worker_id: Optional[str] = None, mode: str = "auto", cookie: Optional[str] = None):
-        self.server_url = server_url.rstrip('/')
+        url = server_url.rstrip('/')
+        # Windows IPv6 fix: replace 'localhost' with '127.0.0.1' to prevent WinError 10061 on ::1
+        if "://localhost" in url:
+            url = url.replace("://localhost", "://127.0.0.1")
+        self.server_url = url
         self.worker_id = worker_id or f"win_worker_{uuid.uuid4().hex[:6]}"
         self.mode = mode
         self.cookie = cookie
