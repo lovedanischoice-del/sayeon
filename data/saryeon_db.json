@@ -13399,14 +13399,14 @@
       "id": "run_ad52556f",
       "project_id": "proj_f0065806",
       "version": 1,
-      "status": "AWAITING_REVIEW",
-      "current_stage": "PACKAGE",
+      "status": "QUEUED",
+      "current_stage": "PLAN",
       "blocking_reason": null,
       "flags": {
         "production_design_version": "v3.8.1",
         "schema_version": "1.0.0",
         "review_policy": "final_only",
-        "render_ready": true,
+        "render_ready": false,
         "editing_complete": false,
         "manual_watch_qc": "pending",
         "transition_plan_version": "v3.7",
@@ -13923,7 +13923,7 @@
         "updated_at": "2026-10-16T07:15:24.682Z"
       },
       "created_at": "2026-10-16T07:15:24.682Z",
-      "updated_at": "2026-10-16T07:50:40.233Z"
+      "updated_at": "2026-10-16T08:10:25.113Z"
     }
   },
   "workers": {

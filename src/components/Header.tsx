@@ -1,5 +1,5 @@
 import React from 'react';
-import { Film, Cpu, HardDrive, ShieldCheck, Activity, RefreshCw } from 'lucide-react';
+import { Film, Cpu, HardDrive, ShieldCheck, Activity, RefreshCw, AlertTriangle } from 'lucide-react';
 
 interface HeaderProps {
   activeTab: 'projects' | 'pipeline' | 'review' | 'diagnostics';
@@ -8,6 +8,7 @@ interface HeaderProps {
   onRefresh: () => void;
   onQuickTest?: () => void;
   activeEngine?: 'comfyui_h3' | 'google_ai';
+  hasError?: boolean;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -15,6 +16,7 @@ export const Header: React.FC<HeaderProps> = ({
   setActiveTab,
   systemStatus,
   activeEngine,
+  hasError,
   onRefresh,
   onQuickTest,
 }) => {
@@ -86,6 +88,17 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Real-time System Indicators */}
       <div className="flex items-center gap-3">
+        {hasError && (
+          <button
+            onClick={() => setActiveTab('pipeline')}
+            className="flex items-center gap-1.5 px-3 py-1 rounded-md bg-rose-950 text-rose-200 border border-rose-600 font-bold text-xs animate-bounce cursor-pointer shadow-lg shadow-rose-950/60 hover:bg-rose-900"
+            title="파이프라인 오류가 감지되었습니다. 클릭하여 세부 내용 확인"
+          >
+            <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
+            <span>🚨 오류 발생 (확인 필요)</span>
+          </button>
+        )}
+
         <div className="flex items-center gap-2 text-xs">
           {/* Worker status */}
           <button

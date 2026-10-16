@@ -307,6 +307,13 @@ export default function App() {
     setActiveTab('pipeline');
   };
 
+  const hasActiveError = Boolean(
+    activeRun?.blocking_reason ||
+    activeRun?.status === 'FAILED' ||
+    activeRun?.flags?.reference_gate_status === 'failed' ||
+    activeRun?.manifest?.shots?.some((s) => s.status === 'qc_failed' || Boolean(s.error_message))
+  );
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans antialiased selection:bg-rose-500 selection:text-white">
       {/* Top Global Header */}
@@ -315,6 +322,7 @@ export default function App() {
         setActiveTab={setActiveTab}
         systemStatus={systemStatus}
         activeEngine={activeRun?.video_engine || activeProject?.video_engine || 'comfyui_h3'}
+        hasError={hasActiveError}
         onQuickTest={handleQuickTest}
         onRefresh={() => {
           fetchProjects();
@@ -380,6 +388,8 @@ export default function App() {
             }}
             onGoToReview={() => setActiveTab('review')}
             onSwitchEngine={handleSwitchEngine}
+            systemStatus={systemStatus}
+            onNavigateToTab={setActiveTab}
           />
         )}
 

@@ -19,6 +19,8 @@ import {
   Eye,
   RefreshCw,
   Cpu,
+  AlertTriangle,
+  ShieldCheck,
 } from 'lucide-react';
 import type { Project, Run, ShotDefinition, PipelineStage } from '../../shared/schemas/types.js';
 
@@ -34,6 +36,8 @@ interface PipelineViewProps {
   onGoToReview: () => void;
   onRunTestPipeline?: (engine?: 'comfyui_h3' | 'google_ai') => void;
   onSwitchEngine?: (engine: 'comfyui_h3' | 'google_ai') => Promise<void>;
+  systemStatus?: any;
+  onNavigateToTab?: (tab: 'projects' | 'pipeline' | 'review' | 'diagnostics') => void;
 }
 
 const STAGES: { id: PipelineStage; label: string; icon: any }[] = [
@@ -60,15 +64,29 @@ export const PipelineView: React.FC<PipelineViewProps> = ({
   onGoToReview,
   onRunTestPipeline,
   onSwitchEngine,
+  systemStatus,
+  onNavigateToTab,
 }) => {
   const [selectedShotId, setSelectedShotId] = useState<string>('S01');
   const [showLogs, setShowLogs] = useState(false);
   const [isRerendering, setIsRerendering] = useState(false);
   const [showRerenderMenu, setShowRerenderMenu] = useState(false);
   const [isQueueingWorker, setIsQueueingWorker] = useState(false);
+  const [isApprovingGate, setIsApprovingGate] = useState(false);
 
   const currentEngine: 'comfyui_h3' | 'google_ai' =
     run?.video_engine || run?.manifest?.video_engine || 'comfyui_h3';
+
+  const isWorkerOnline = systemStatus?.worker_connection?.status === 'CONNECTED';
+  const isError = Boolean(run?.blocking_reason || run?.status === 'FAILED');
+  const isGateBlocked = run?.flags?.reference_gate_status === 'failed';
+  const isWorkerOfflineForQueued =
+    (run?.status === 'QUEUED' || run?.status === 'RUNNING') &&
+    !isWorkerOnline &&
+    currentEngine === 'comfyui_h3';
+  const failedShots = (run?.manifest?.shots || []).filter(
+    (s) => s.status === 'qc_failed' || Boolean(s.error_message)
+  );
 
   const handleQueueRealWorker = async () => {
     if (!run) return;
@@ -276,6 +294,151 @@ export const PipelineView: React.FC<PipelineViewProps> = ({
         </div>
       </div>
 
+      {/* 🚨 PIPELINE ALERT & PROBLEM BANNER (Visible whenever there is an error or stoppage) */}
+      {(isError || isGateBlocked || isWorkerOfflineForQueued || failedShots.length > 0) && (
+        <div
+          className={`p-4 rounded-xl border transition-all duration-300 shadow-xl ${
+            isError || failedShots.length > 0
+              ? 'bg-rose-950/70 border-rose-500/80 text-rose-200 ring-1 ring-rose-500/50'
+              : isGateBlocked
+              ? 'bg-amber-950/70 border-amber-500/80 text-amber-200 ring-1 ring-amber-500/50'
+              : 'bg-blue-950/70 border-blue-500/80 text-blue-200 ring-1 ring-blue-500/50'
+          }`}
+        >
+          <div className="flex flex-col md:flex-row md:items-start justify-between gap-3">
+            <div className="flex items-start gap-3">
+              <div
+                className={`p-2 rounded-lg mt-0.5 flex-shrink-0 ${
+                  isError || failedShots.length > 0
+                    ? 'bg-rose-900/90 text-rose-300 border border-rose-700'
+                    : isGateBlocked
+                    ? 'bg-amber-900/90 text-amber-300 border border-amber-700'
+                    : 'bg-blue-900/90 text-blue-300 border border-blue-700'
+                }`}
+              >
+                {isError || failedShots.length > 0 ? (
+                  <AlertTriangle className="w-5 h-5 text-rose-400 animate-pulse" />
+                ) : isGateBlocked ? (
+                  <ShieldCheck className="w-5 h-5 text-amber-400" />
+                ) : (
+                  <Cpu className="w-5 h-5 text-blue-400 animate-pulse" />
+                )}
+              </div>
+
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-sm tracking-tight text-white flex items-center gap-1.5">
+                    {isError
+                      ? '⚠️ 파이프라인 중단: 오류가 감지되었습니다'
+                      : failedShots.length > 0
+                      ? `⚠️ ${failedShots.map((s) => s.scene_id).join(', ')} 컷 영상 생성 중 문제 발생`
+                      : isGateBlocked
+                      ? '🛑 사전제작 품질 관문 차단 (안전 보호 조치)'
+                      : '📡 로컬 GPU Worker 연결 대기 중 (작업 일시 정체)'}
+                  </span>
+                  <span
+                    className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-bold ${
+                      isError || failedShots.length > 0
+                        ? 'bg-rose-900 text-rose-200'
+                        : isGateBlocked
+                        ? 'bg-amber-900 text-amber-200'
+                        : 'bg-blue-900 text-blue-200'
+                    }`}
+                  >
+                    {run.status}
+                  </span>
+                </div>
+
+                <p className="text-xs text-slate-300 leading-relaxed font-medium">
+                  {isError && (
+                    <span>
+                      {run.blocking_reason ||
+                        '작업 실행 중 예기치 않은 오류가 발생하여 파이프라인이 중단되었습니다. 아래 버튼을 눌러 재시도하세요.'}
+                    </span>
+                  )}
+                  {failedShots.length > 0 && !isError && (
+                    <span>
+                      {failedShots
+                        .map((s) => `${s.scene_id}: ${s.error_message || '생성 실패'}`)
+                        .join(' | ')}
+                    </span>
+                  )}
+                  {isGateBlocked && !isError && failedShots.length === 0 && (
+                    <span>
+                      {run.flags?.reference_gate_notes ||
+                        '교복 및 캐릭터 일관성 기준 이미지 관문 검증이 완료되지 않아, 불필요한 GPU 렌더링 비용을 방지하기 위해 생성이 차단되었습니다.'}
+                    </span>
+                  )}
+                  {isWorkerOfflineForQueued && !isError && !isGateBlocked && failedShots.length === 0 && (
+                    <span>
+                      작업이 대기열(QUEUED)에 등록되었으나, 현재 사용자 PC의 Python Worker가 연결되지 않아 연산이 멈춰 있습니다. 터미널에서 워커를 실행해 주세요.
+                    </span>
+                  )}
+                </p>
+
+                {isWorkerOfflineForQueued && !isError && (
+                  <div className="pt-1.5 flex flex-wrap items-center gap-2 font-mono text-[11px] text-slate-300">
+                    <span className="text-slate-400">워커 실행:</span>
+                    <code className="px-2 py-0.5 rounded bg-slate-900 border border-slate-750 text-blue-300">
+                      powershell -File scripts\start_worker.ps1 -Mode "real"
+                    </code>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Quick Action / Resolution Buttons */}
+            <div className="flex flex-wrap items-center gap-2 pt-1 md:pt-0 self-end md:self-center flex-shrink-0">
+              {(isError || failedShots.length > 0) && (
+                <>
+                  <button
+                    onClick={onResume}
+                    className="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow flex items-center gap-1 transition cursor-pointer"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span>파이프라인 재시도</span>
+                  </button>
+                  <button
+                    onClick={() => onSwitchEngine && onSwitchEngine('google_ai')}
+                    className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-indigo-700/60 font-semibold text-xs flex items-center gap-1 transition cursor-pointer"
+                  >
+                    <span>🌐 Google AI로 전환</span>
+                  </button>
+                </>
+              )}
+
+              {isGateBlocked && (
+                <button
+                  onClick={async () => {
+                    setIsApprovingGate(true);
+                    try {
+                      await fetch(`/api/runs/${run.id}/approve-gate`, { method: 'POST' });
+                      onRefresh();
+                    } finally {
+                      setIsApprovingGate(false);
+                    }
+                  }}
+                  disabled={isApprovingGate}
+                  className="px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs shadow flex items-center gap-1 transition cursor-pointer disabled:opacity-50"
+                >
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  <span>{isApprovingGate ? '승인 중...' : '사전제작 승인하고 진행'}</span>
+                </button>
+              )}
+
+              {onNavigateToTab && (
+                <button
+                  onClick={() => onNavigateToTab('diagnostics')}
+                  className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 font-medium text-xs flex items-center gap-1 transition cursor-pointer"
+                >
+                  <span>🛠️ 환경 점검</span>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Video Engine Selection Bar (ComfyUI MiniMax H3 vs Google AI Cloud) */}
       <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
@@ -416,13 +579,16 @@ export const PipelineView: React.FC<PipelineViewProps> = ({
               const isSelected = shot.scene_id === selectedShotId;
               const hasVideo = shot.status === 'video_ready' || shot.status === 'completed';
               const hasImg = shot.status === 'image_ready' || hasVideo;
+              const isShotFailed = shot.status === 'qc_failed' || Boolean(shot.error_message);
 
               return (
                 <div
                   key={shot.scene_id}
                   onClick={() => setSelectedShotId(shot.scene_id)}
                   className={`p-2.5 rounded-lg border transition cursor-pointer flex flex-col justify-between ${
-                    isSelected
+                    isShotFailed
+                      ? 'bg-rose-950/40 border-rose-500 shadow-lg ring-1 ring-rose-500/80 animate-pulse'
+                      : isSelected
                       ? 'bg-slate-800 border-rose-500 shadow-md ring-1 ring-rose-500/60'
                       : 'bg-slate-900 border-slate-800 hover:border-slate-700'
                   }`}
@@ -430,9 +596,16 @@ export const PipelineView: React.FC<PipelineViewProps> = ({
                   <div>
                     {/* Scene Badge & Role */}
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="font-mono text-xs font-bold text-rose-400">
-                        {shot.scene_id}
-                      </span>
+                      <div className="flex items-center gap-1">
+                        <span className="font-mono text-xs font-bold text-rose-400">
+                          {shot.scene_id}
+                        </span>
+                        {isShotFailed && (
+                          <span className="text-[9px] px-1 rounded bg-rose-600 text-white font-bold">
+                            오류
+                          </span>
+                        )}
+                      </div>
                       <span className="text-[10px] uppercase font-semibold text-slate-400">
                         {shot.beat_role}
                       </span>
@@ -466,17 +639,27 @@ export const PipelineView: React.FC<PipelineViewProps> = ({
                         </span>
                       )}
 
+                      {/* Error Overlay if failed */}
+                      {isShotFailed && (
+                        <div className="absolute inset-0 bg-rose-950/80 flex flex-col items-center justify-center p-1 text-center text-rose-200 z-10">
+                          <AlertTriangle className="w-5 h-5 text-rose-400 mb-0.5 animate-bounce" />
+                          <span className="text-[10px] font-bold">오류 발생</span>
+                        </div>
+                      )}
+
                       {/* Status Overlay */}
                       <span
                         className={`absolute bottom-1 right-1 px-1 py-0.5 rounded text-[9px] font-mono ${
-                          hasVideo
+                          isShotFailed
+                            ? 'bg-rose-950 text-rose-300 border border-rose-700 font-bold'
+                            : hasVideo
                             ? 'bg-emerald-950/80 text-emerald-300 border border-emerald-800/60'
                             : hasImg
                             ? 'bg-blue-950/80 text-blue-300 border border-blue-800/60'
                             : 'bg-slate-900/80 text-slate-400'
                         }`}
                       >
-                        {hasVideo ? '영상 완료' : hasImg ? '이미지 준비' : '대기'}
+                        {isShotFailed ? '생성 실패' : hasVideo ? '영상 완료' : hasImg ? '이미지 준비' : '대기'}
                       </span>
                     </div>
 
@@ -524,6 +707,37 @@ export const PipelineView: React.FC<PipelineViewProps> = ({
                 </button>
               </div>
             </div>
+
+            {/* Shot Error Alert Box if failed */}
+            {(selectedShot.error_message || selectedShot.status === 'qc_failed') && (
+              <div className="p-3 bg-rose-950/80 border border-rose-600 rounded-xl space-y-2 text-xs text-rose-200 shadow-md">
+                <div className="flex items-center gap-2 font-bold text-rose-300">
+                  <AlertTriangle className="w-4 h-4 text-rose-400 animate-pulse" />
+                  <span>{selectedShot.scene_id} 컷 오류 발생</span>
+                </div>
+                <p className="text-[11px] text-slate-300 leading-relaxed">
+                  {selectedShot.error_message || '영상 생성 또는 품질 검사(QC) 중 문제가 발생했습니다.'}
+                </p>
+                <div className="flex items-center gap-2 pt-1">
+                  <button
+                    onClick={() => handleRerenderVideo([selectedShot.scene_id], 'comfyui_h3')}
+                    disabled={isRerendering}
+                    className="flex-1 py-1.5 px-2 rounded bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs flex items-center justify-center gap-1 transition cursor-pointer disabled:opacity-50"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span>H3 GPU 재시도</span>
+                  </button>
+                  <button
+                    onClick={() => handleRerenderVideo([selectedShot.scene_id], 'google_ai')}
+                    disabled={isRerendering}
+                    className="flex-1 py-1.5 px-2 rounded bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center justify-center gap-1 transition cursor-pointer disabled:opacity-50"
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>Google AI 대체</span>
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Shot Photo Preview in Inspector */}
             <div className="w-full aspect-[9/16] max-h-72 bg-slate-950 rounded-lg overflow-hidden border border-slate-800 relative group">
