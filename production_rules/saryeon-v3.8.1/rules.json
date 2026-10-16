@@ -1,0 +1,51 @@
+{
+  "version": "v3.8.1",
+  "updated_date": "2026-10-12",
+  "target_audience": "Korean female 60+, emotional resonance, human drama, sacrifice, misunderstanding, twist, emotional resolution",
+  "shots_budget": {
+    "total_shots": 10,
+    "shot_ids": ["S01", "S02", "S03", "S04", "S05", "S06", "S07", "S08", "S09", "S10"],
+    "source_duration_per_shot_sec": 5.0,
+    "total_source_duration_sec": 50.0,
+    "final_target_duration_range_sec": [45.0, 52.0],
+    "visual_beats_range": [12, 18],
+    "pacing_beat_interval_sec": [3.0, 5.0],
+    "boundaries_count": 9
+  },
+  "visual_style": {
+    "aspect_ratio": "9:16",
+    "resolution_native": "608x1056",
+    "resolution_output": "1080x1920",
+    "fps": 24,
+    "style_keywords": "Korean realistic human drama, natural daylight/warm indoor lighting, authentic Seoul/suburban apartment, hospital room or small shop, cinematic depth of field, real human textures, subtle emotional acting",
+    "prohibited_elements": ["chibi", "anime", "glossy plastic skin", "excessive beauty filters", "floating text in image", "direct camera stare", "mouth open for non-speaking characters", "completed action in start frame"]
+  },
+  "character_rules": {
+    "max_speakers_per_clip": 1,
+    "silent_character_mouth": "must be closed and relaxed",
+    "gaze_continuity": "consistent gaze vector across cut boundary",
+    "age_representation": "separate appearance ID for past vs present if time gap exists"
+  },
+  "editing_rules": {
+    "default_cut": "hard_cut",
+    "audio_cross_boundary": "J-cut (speech leads video by 0.2~0.5s) or L-cut (speech trails video by 0.2~0.5s)",
+    "no_speedup": "1.0x native playback speed, no whole-video speed warping",
+    "no_freeze_frame_padding": "never stretch last frame to pad duration",
+    "subtitles": {
+      "max_lines": 2,
+      "chars_per_line_max": 18,
+      "font_family": "NanumGothicBold, Pretendard, AppleSDGothicNeo",
+      "position": "bottom_centered_safe_zone"
+    },
+    "bgm": {
+      "volume_relative_to_voice": 0.18,
+      "ducking": true
+    }
+  },
+  "qc_tolerances": {
+    "max_silent_gap_sec": 1.2,
+    "max_dialogue_speed_char_per_sec": 7.0,
+    "black_frames_max": 0,
+    "audio_clipping_threshold_db": -0.5
+  }
+}

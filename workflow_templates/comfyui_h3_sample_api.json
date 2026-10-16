@@ -1,0 +1,67 @@
+{
+  "3": {
+    "inputs": {
+      "seed": 8492019482,
+      "steps": 25,
+      "cfg": 7.0,
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "denoise": 1.0,
+      "model": ["4", 0],
+      "positive": ["6", 0],
+      "negative": ["7", 0],
+      "latent_image": ["12", 0]
+    },
+    "class_type": "KSampler"
+  },
+  "4": {
+    "inputs": {
+      "ckpt_name": "H3_korean_drama_base_v1.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple"
+  },
+  "6": {
+    "inputs": {
+      "text": "A realistic Korean mother in her late 60s, worn clothes, speaking gently in an apartment room",
+      "clip": ["4", 1]
+    },
+    "class_type": "CLIPTextEncode"
+  },
+  "7": {
+    "inputs": {
+      "text": "blurry, low quality, anime, cartoon, text, watermark, distorted hands",
+      "clip": ["4", 1]
+    },
+    "class_type": "CLIPTextEncode"
+  },
+  "12": {
+    "inputs": {
+      "image": "S01_input.png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage"
+  },
+  "24": {
+    "inputs": {
+      "dialogue_text": "얘야, 이번 달엔 이것밖에 못 모았단다...",
+      "speaker_voice": "korean_female_elderly_warm"
+    },
+    "class_type": "H3DialogueAudioEngine"
+  },
+  "45": {
+    "inputs": {
+      "filename_prefix": "saryeon_H3_S01",
+      "fps": 24,
+      "images": ["3", 0],
+      "audio": ["24", 0]
+    },
+    "class_type": "SaveVideo"
+  },
+  "46": {
+    "inputs": {
+      "filename_prefix": "saryeon_H3_audio_S01",
+      "audio": ["24", 0]
+    },
+    "class_type": "SaveAudio"
+  }
+}

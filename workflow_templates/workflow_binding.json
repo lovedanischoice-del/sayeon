@@ -1,0 +1,58 @@
+{
+  "binding_version": "1.1.0",
+  "workflow_name": "MiniMax_H3_KoreanDrama_Workflow",
+  "workflow_hash": "minimax_h3_subgraph_105_v1",
+  "expected_fps": 24,
+  "expected_source_duration_sec": 5.0,
+  "expected_resolution": {
+    "aspect_ratio": "9:16 (Portrait Widescreen)",
+    "megapixels": 0.6,
+    "multiple": 32,
+    "target_output_width": 1080,
+    "target_output_height": 1920
+  },
+  "node_mappings": {
+    "start_image_input": {
+      "node_id": "114",
+      "field_name": "image",
+      "class_type": "LoadImage",
+      "description": "ComfyUI LoadImage node loading the 9:16 starting frame PNG"
+    },
+    "positive_prompt": {
+      "node_id": "105:104",
+      "field_name": "prompt",
+      "class_type": "MiniMaxH3ImageToVideo",
+      "description": "MiniMax H3 Image to Video integrated multimodal prompt"
+    },
+    "duration_seconds": {
+      "node_id": "105:111",
+      "field_name": "value",
+      "class_type": "PrimitiveFloat",
+      "target_value": 5.0,
+      "description": "Duration in seconds (v3.8.1 requires 5.0s per shot)"
+    },
+    "seed": {
+      "node_id": "105:15",
+      "field_name": "noise_seed",
+      "class_type": "RandomNoise",
+      "supports_reproducibility": true
+    },
+    "resolution_selector": {
+      "node_id": "115",
+      "field_name": "aspect_ratio",
+      "class_type": "ResolutionSelector",
+      "target_value": "9:16 (Portrait Widescreen)"
+    },
+    "output_video": {
+      "node_id": "92",
+      "field_name": "filename_prefix",
+      "class_type": "SaveVideo",
+      "default_prefix": "video/MiniMax_H3"
+    }
+  },
+  "execution_constraints": {
+    "max_concurrency": 1,
+    "gpu_timeout_sec": 300,
+    "allow_arbitrary_node_override": false
+  }
+}

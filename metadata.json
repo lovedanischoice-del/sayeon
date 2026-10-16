@@ -1,0 +1,6 @@
+{
+  "name": "사연쇼츠 스튜디오",
+  "description": "사연쇼츠 자동 제작 웹앱 — 기획, 대본, 10샷 스토리보드, H3 영상 및 FFmpeg 자동 편집 시스템 (v3.8.1 기준)",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
