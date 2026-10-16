@@ -373,6 +373,24 @@
       "updated_at": "2026-10-16T02:00:03.129Z",
       "current_run_id": "run_376e1b41",
       "owner_id": "owner_default"
+    },
+    "proj_f0065806": {
+      "id": "proj_f0065806",
+      "title": "새벽 4시, 20년 만에 찾은 아버지의 구두",
+      "raw_story": "20년 전 집을 나간 아버지에 대한 원망을 품고 살던 준혁은 어느 날 지방 병원에서 아버지가 위독하다는 연락을 받는다. 차갑게 돌아선 마음으로 찾아간 병실 구석에서 닳고 닳은 낡은 구두 한 켤레와 20년 동안 아들의 학비와 결혼 자금을 위해 매달 몰래 송금했던 통장 뭉치를 발견하고 오열한다.",
+      "must_keep_sentences": [
+        "아버지, 왜 그렇게 닳아빠진 구두만 신고 계셨어요?",
+        "미안하다 준혁아... 아비가 이것밖에 못 해줘서..."
+      ],
+      "ending_intent": "20년의 오랜 원망이 아버지의 닳아빠진 구두와 깊은 사랑 앞에서 눈물과 용서로 치유되는 감동적인 아침",
+      "fact_type": "actual_fact",
+      "video_engine": "comfyui_h3",
+      "budget_limit_krw": 50000,
+      "total_spent_krw": 0,
+      "created_at": "2026-10-16T07:15:17.294Z",
+      "updated_at": "2026-10-16T07:15:24.682Z",
+      "current_run_id": "run_ad52556f",
+      "owner_id": "owner_default"
     }
   },
   "runs": {
@@ -13376,6 +13394,536 @@
       },
       "created_at": "2026-10-16T02:00:03.120Z",
       "updated_at": "2026-10-16T02:07:45.623Z"
+    },
+    "run_ad52556f": {
+      "id": "run_ad52556f",
+      "project_id": "proj_f0065806",
+      "version": 1,
+      "status": "AWAITING_REVIEW",
+      "current_stage": "PACKAGE",
+      "blocking_reason": null,
+      "flags": {
+        "production_design_version": "v3.8.1",
+        "schema_version": "1.0.0",
+        "review_policy": "final_only",
+        "render_ready": true,
+        "editing_complete": false,
+        "manual_watch_qc": "pending",
+        "transition_plan_version": "v3.7",
+        "pacing_plan_version": "v3.8",
+        "preproduction_qc": "pending",
+        "reference_gate_status": "pending",
+        "reference_gate_notes": "교복 및 캐릭터 기준 이미지 관문 검증 대기 (사전제작 통과 전 원격 생성 차단)",
+        "image_storyboard_qc": "pending",
+        "h3_edit_coverage_qc": "pending",
+        "transition_qc": "pending",
+        "pacing_qc": "pending",
+        "drive_export_status": "NOT_STARTED"
+      },
+      "video_engine": "google_ai",
+      "manifest": {
+        "manifest_version": "1.0.0",
+        "project_id": "proj_f0065806",
+        "run_id": "run_ad52556f",
+        "title": "새벽 4시, 20년 만에 찾은 아버지의 구두",
+        "fact_type": "actual_fact",
+        "video_engine": "comfyui_h3",
+        "story_text_hash": "cd54f5111409a88e3003784e64318e343fa2f4ace774e76732824c899197ce1d",
+        "characters": [],
+        "props": [],
+        "shots": [
+          {
+            "scene_id": "S01",
+            "story_beat_id": "B01",
+            "beat_role": "hook",
+            "new_information_or_change": "사연쇼츠 S01 전개",
+            "cast_ids": [
+              "char_01"
+            ],
+            "speaker_id": "char_01",
+            "dialogue_id": "D01",
+            "exact_dialogue_or_silent": "사연쇼츠 S01 대사",
+            "estimated_speech_seconds": 3.5,
+            "location_id": "loc_main",
+            "story_time": "present",
+            "appearance_ids": [
+              "app_01_present"
+            ],
+            "prop_identity_hand": "기본 소품",
+            "start_frame_state": "S01 시작 직전의 정적 상태",
+            "core_action": "S01 주요 감정 행동",
+            "reaction_or_end_state": "S01 리액션",
+            "gaze_axis": "시선 일관성 유지",
+            "composition": "9:16 세로 미디엄 샷",
+            "edit_use_window_plan": {
+              "in_sec": 0.5,
+              "out_sec": 4.5,
+              "target_duration": 4
+            },
+            "incoming_link": "오프닝",
+            "outgoing_link": "S02 연결",
+            "continuity_risks": [],
+            "reference_asset_ids": [],
+            "video_engine": "google_ai",
+            "status": "video_ready",
+            "qc_result_ids": [],
+            "attempt_count": 0,
+            "video_asset_id": "run_ad52556f_S01",
+            "video_url": "/api/assets/run_ad52556f_S01"
+          },
+          {
+            "scene_id": "S02",
+            "story_beat_id": "B02",
+            "beat_role": "conflict",
+            "new_information_or_change": "사연쇼츠 S02 전개",
+            "cast_ids": [
+              "char_01"
+            ],
+            "speaker_id": null,
+            "dialogue_id": "D02",
+            "exact_dialogue_or_silent": "",
+            "estimated_speech_seconds": 3.5,
+            "location_id": "loc_main",
+            "story_time": "present",
+            "appearance_ids": [
+              "app_01_present"
+            ],
+            "prop_identity_hand": "기본 소품",
+            "start_frame_state": "S02 시작 직전의 정적 상태",
+            "core_action": "S02 주요 감정 행동",
+            "reaction_or_end_state": "S02 리액션",
+            "gaze_axis": "시선 일관성 유지",
+            "composition": "9:16 세로 미디엄 샷",
+            "edit_use_window_plan": {
+              "in_sec": 0.5,
+              "out_sec": 4.5,
+              "target_duration": 4
+            },
+            "incoming_link": "S01 연결",
+            "outgoing_link": "S03 연결",
+            "continuity_risks": [],
+            "reference_asset_ids": [],
+            "video_engine": "comfyui_h3",
+            "status": "video_ready",
+            "qc_result_ids": [],
+            "attempt_count": 0,
+            "video_asset_id": "run_ad52556f_S02",
+            "video_url": "/api/assets/run_ad52556f_S02"
+          },
+          {
+            "scene_id": "S03",
+            "story_beat_id": "B03",
+            "beat_role": "conflict",
+            "new_information_or_change": "사연쇼츠 S03 전개",
+            "cast_ids": [
+              "char_01"
+            ],
+            "speaker_id": "char_01",
+            "dialogue_id": "D03",
+            "exact_dialogue_or_silent": "사연쇼츠 S03 대사",
+            "estimated_speech_seconds": 3.5,
+            "location_id": "loc_main",
+            "story_time": "present",
+            "appearance_ids": [
+              "app_01_present"
+            ],
+            "prop_identity_hand": "기본 소품",
+            "start_frame_state": "S03 시작 직전의 정적 상태",
+            "core_action": "S03 주요 감정 행동",
+            "reaction_or_end_state": "S03 리액션",
+            "gaze_axis": "시선 일관성 유지",
+            "composition": "9:16 세로 미디엄 샷",
+            "edit_use_window_plan": {
+              "in_sec": 0.5,
+              "out_sec": 4.5,
+              "target_duration": 4
+            },
+            "incoming_link": "S02 연결",
+            "outgoing_link": "S04 연결",
+            "continuity_risks": [],
+            "reference_asset_ids": [],
+            "video_engine": "comfyui_h3",
+            "status": "video_ready",
+            "qc_result_ids": [],
+            "attempt_count": 0,
+            "video_asset_id": "run_ad52556f_S03",
+            "video_url": "/api/assets/run_ad52556f_S03"
+          },
+          {
+            "scene_id": "S04",
+            "story_beat_id": "B04",
+            "beat_role": "conflict",
+            "new_information_or_change": "사연쇼츠 S04 전개",
+            "cast_ids": [
+              "char_01"
+            ],
+            "speaker_id": null,
+            "dialogue_id": "D04",
+            "exact_dialogue_or_silent": "",
+            "estimated_speech_seconds": 3.5,
+            "location_id": "loc_main",
+            "story_time": "present",
+            "appearance_ids": [
+              "app_01_present"
+            ],
+            "prop_identity_hand": "기본 소품",
+            "start_frame_state": "S04 시작 직전의 정적 상태",
+            "core_action": "S04 주요 감정 행동",
+            "reaction_or_end_state": "S04 리액션",
+            "gaze_axis": "시선 일관성 유지",
+            "composition": "9:16 세로 미디엄 샷",
+            "edit_use_window_plan": {
+              "in_sec": 0.5,
+              "out_sec": 4.5,
+              "target_duration": 4
+            },
+            "incoming_link": "S03 연결",
+            "outgoing_link": "S05 연결",
+            "continuity_risks": [],
+            "reference_asset_ids": [],
+            "video_engine": "comfyui_h3",
+            "status": "video_ready",
+            "qc_result_ids": [],
+            "attempt_count": 0,
+            "video_asset_id": "run_ad52556f_S04",
+            "video_url": "/api/assets/run_ad52556f_S04"
+          },
+          {
+            "scene_id": "S05",
+            "story_beat_id": "B05",
+            "beat_role": "conflict",
+            "new_information_or_change": "사연쇼츠 S05 전개",
+            "cast_ids": [
+              "char_01"
+            ],
+            "speaker_id": "char_01",
+            "dialogue_id": "D05",
+            "exact_dialogue_or_silent": "사연쇼츠 S05 대사",
+            "estimated_speech_seconds": 3.5,
+            "location_id": "loc_main",
+            "story_time": "present",
+            "appearance_ids": [
+              "app_01_present"
+            ],
+            "prop_identity_hand": "기본 소품",
+            "start_frame_state": "S05 시작 직전의 정적 상태",
+            "core_action": "S05 주요 감정 행동",
+            "reaction_or_end_state": "S05 리액션",
+            "gaze_axis": "시선 일관성 유지",
+            "composition": "9:16 세로 미디엄 샷",
+            "edit_use_window_plan": {
+              "in_sec": 0.5,
+              "out_sec": 4.5,
+              "target_duration": 4
+            },
+            "incoming_link": "S04 연결",
+            "outgoing_link": "S06 연결",
+            "continuity_risks": [],
+            "reference_asset_ids": [],
+            "video_engine": "comfyui_h3",
+            "status": "video_ready",
+            "qc_result_ids": [],
+            "attempt_count": 0,
+            "video_asset_id": "run_ad52556f_S05",
+            "video_url": "/api/assets/run_ad52556f_S05"
+          },
+          {
+            "scene_id": "S06",
+            "story_beat_id": "B06",
+            "beat_role": "conflict",
+            "new_information_or_change": "사연쇼츠 S06 전개",
+            "cast_ids": [
+              "char_01"
+            ],
+            "speaker_id": null,
+            "dialogue_id": "D06",
+            "exact_dialogue_or_silent": "",
+            "estimated_speech_seconds": 3.5,
+            "location_id": "loc_main",
+            "story_time": "present",
+            "appearance_ids": [
+              "app_01_present"
+            ],
+            "prop_identity_hand": "기본 소품",
+            "start_frame_state": "S06 시작 직전의 정적 상태",
+            "core_action": "S06 주요 감정 행동",
+            "reaction_or_end_state": "S06 리액션",
+            "gaze_axis": "시선 일관성 유지",
+            "composition": "9:16 세로 미디엄 샷",
+            "edit_use_window_plan": {
+              "in_sec": 0.5,
+              "out_sec": 4.5,
+              "target_duration": 4
+            },
+            "incoming_link": "S05 연결",
+            "outgoing_link": "S07 연결",
+            "continuity_risks": [],
+            "reference_asset_ids": [],
+            "video_engine": "comfyui_h3",
+            "status": "video_ready",
+            "qc_result_ids": [],
+            "attempt_count": 0,
+            "video_asset_id": "run_ad52556f_S06",
+            "video_url": "/api/assets/run_ad52556f_S06"
+          },
+          {
+            "scene_id": "S07",
+            "story_beat_id": "B07",
+            "beat_role": "conflict",
+            "new_information_or_change": "사연쇼츠 S07 전개",
+            "cast_ids": [
+              "char_01"
+            ],
+            "speaker_id": "char_01",
+            "dialogue_id": "D07",
+            "exact_dialogue_or_silent": "사연쇼츠 S07 대사",
+            "estimated_speech_seconds": 3.5,
+            "location_id": "loc_main",
+            "story_time": "present",
+            "appearance_ids": [
+              "app_01_present"
+            ],
+            "prop_identity_hand": "기본 소품",
+            "start_frame_state": "S07 시작 직전의 정적 상태",
+            "core_action": "S07 주요 감정 행동",
+            "reaction_or_end_state": "S07 리액션",
+            "gaze_axis": "시선 일관성 유지",
+            "composition": "9:16 세로 미디엄 샷",
+            "edit_use_window_plan": {
+              "in_sec": 0.5,
+              "out_sec": 4.5,
+              "target_duration": 4
+            },
+            "incoming_link": "S06 연결",
+            "outgoing_link": "S08 연결",
+            "continuity_risks": [],
+            "reference_asset_ids": [],
+            "video_engine": "comfyui_h3",
+            "status": "video_ready",
+            "qc_result_ids": [],
+            "attempt_count": 0,
+            "video_asset_id": "run_ad52556f_S07",
+            "video_url": "/api/assets/run_ad52556f_S07"
+          },
+          {
+            "scene_id": "S08",
+            "story_beat_id": "B08",
+            "beat_role": "conflict",
+            "new_information_or_change": "사연쇼츠 S08 전개",
+            "cast_ids": [
+              "char_01"
+            ],
+            "speaker_id": null,
+            "dialogue_id": "D08",
+            "exact_dialogue_or_silent": "",
+            "estimated_speech_seconds": 3.5,
+            "location_id": "loc_main",
+            "story_time": "present",
+            "appearance_ids": [
+              "app_01_present"
+            ],
+            "prop_identity_hand": "기본 소품",
+            "start_frame_state": "S08 시작 직전의 정적 상태",
+            "core_action": "S08 주요 감정 행동",
+            "reaction_or_end_state": "S08 리액션",
+            "gaze_axis": "시선 일관성 유지",
+            "composition": "9:16 세로 미디엄 샷",
+            "edit_use_window_plan": {
+              "in_sec": 0.5,
+              "out_sec": 4.5,
+              "target_duration": 4
+            },
+            "incoming_link": "S07 연결",
+            "outgoing_link": "S09 연결",
+            "continuity_risks": [],
+            "reference_asset_ids": [],
+            "video_engine": "comfyui_h3",
+            "status": "video_ready",
+            "qc_result_ids": [],
+            "attempt_count": 0,
+            "video_asset_id": "run_ad52556f_S08",
+            "video_url": "/api/assets/run_ad52556f_S08"
+          },
+          {
+            "scene_id": "S09",
+            "story_beat_id": "B09",
+            "beat_role": "climax",
+            "new_information_or_change": "사연쇼츠 S09 전개",
+            "cast_ids": [
+              "char_01"
+            ],
+            "speaker_id": "char_01",
+            "dialogue_id": "D09",
+            "exact_dialogue_or_silent": "사연쇼츠 S09 대사",
+            "estimated_speech_seconds": 3.5,
+            "location_id": "loc_main",
+            "story_time": "present",
+            "appearance_ids": [
+              "app_01_present"
+            ],
+            "prop_identity_hand": "기본 소품",
+            "start_frame_state": "S09 시작 직전의 정적 상태",
+            "core_action": "S09 주요 감정 행동",
+            "reaction_or_end_state": "S09 리액션",
+            "gaze_axis": "시선 일관성 유지",
+            "composition": "9:16 세로 미디엄 샷",
+            "edit_use_window_plan": {
+              "in_sec": 0.5,
+              "out_sec": 4.5,
+              "target_duration": 4
+            },
+            "incoming_link": "S08 연결",
+            "outgoing_link": "S10 연결",
+            "continuity_risks": [],
+            "reference_asset_ids": [],
+            "video_engine": "google_ai",
+            "status": "video_ready",
+            "qc_result_ids": [],
+            "attempt_count": 0,
+            "video_asset_id": "run_ad52556f_S09",
+            "video_url": "/api/assets/run_ad52556f_S09"
+          },
+          {
+            "scene_id": "S10",
+            "story_beat_id": "B10",
+            "beat_role": "resolution",
+            "new_information_or_change": "사연쇼츠 S10 전개",
+            "cast_ids": [
+              "char_01"
+            ],
+            "speaker_id": null,
+            "dialogue_id": "D10",
+            "exact_dialogue_or_silent": "",
+            "estimated_speech_seconds": 0,
+            "location_id": "loc_main",
+            "story_time": "present",
+            "appearance_ids": [
+              "app_01_present"
+            ],
+            "prop_identity_hand": "기본 소품",
+            "start_frame_state": "S10 시작 직전의 정적 상태",
+            "core_action": "S10 주요 감정 행동",
+            "reaction_or_end_state": "S10 리액션",
+            "gaze_axis": "시선 일관성 유지",
+            "composition": "9:16 세로 미디엄 샷",
+            "edit_use_window_plan": {
+              "in_sec": 0.5,
+              "out_sec": 4.5,
+              "target_duration": 4
+            },
+            "incoming_link": "S09 연결",
+            "outgoing_link": "엔딩",
+            "continuity_risks": [],
+            "reference_asset_ids": [],
+            "video_engine": "google_ai",
+            "status": "video_ready",
+            "qc_result_ids": [],
+            "attempt_count": 0,
+            "video_asset_id": "run_ad52556f_S10",
+            "video_url": "/api/assets/run_ad52556f_S10"
+          }
+        ],
+        "timeline": {
+          "version": 1,
+          "total_duration_sec": 48,
+          "clips": [],
+          "subtitles": [],
+          "boundaries": [
+            {
+              "boundary_index": 1,
+              "from_scene": "S01",
+              "to_scene": "S02",
+              "type": "hard_cut",
+              "continuity_verified": false
+            },
+            {
+              "boundary_index": 2,
+              "from_scene": "S02",
+              "to_scene": "S03",
+              "type": "hard_cut",
+              "continuity_verified": false
+            },
+            {
+              "boundary_index": 3,
+              "from_scene": "S03",
+              "to_scene": "S04",
+              "type": "hard_cut",
+              "continuity_verified": false
+            },
+            {
+              "boundary_index": 4,
+              "from_scene": "S04",
+              "to_scene": "S05",
+              "type": "hard_cut",
+              "continuity_verified": false
+            },
+            {
+              "boundary_index": 5,
+              "from_scene": "S05",
+              "to_scene": "S06",
+              "type": "hard_cut",
+              "continuity_verified": false
+            },
+            {
+              "boundary_index": 6,
+              "from_scene": "S06",
+              "to_scene": "S07",
+              "type": "hard_cut",
+              "continuity_verified": false
+            },
+            {
+              "boundary_index": 7,
+              "from_scene": "S07",
+              "to_scene": "S08",
+              "type": "hard_cut",
+              "continuity_verified": false
+            },
+            {
+              "boundary_index": 8,
+              "from_scene": "S08",
+              "to_scene": "S09",
+              "type": "hard_cut",
+              "continuity_verified": false
+            },
+            {
+              "boundary_index": 9,
+              "from_scene": "S09",
+              "to_scene": "S10",
+              "type": "hard_cut",
+              "continuity_verified": false
+            }
+          ]
+        },
+        "flags": {
+          "production_design_version": "v3.8.1",
+          "schema_version": "1.0.0",
+          "review_policy": "final_only",
+          "render_ready": false,
+          "editing_complete": false,
+          "manual_watch_qc": "pending",
+          "transition_plan_version": "v3.7",
+          "pacing_plan_version": "v3.8",
+          "preproduction_qc": "pending",
+          "reference_gate_status": "pending",
+          "reference_gate_notes": "교복 및 캐릭터 기준 이미지 관문 검증 대기 (사전제작 통과 전 원격 생성 차단)",
+          "image_storyboard_qc": "pending",
+          "h3_edit_coverage_qc": "pending",
+          "transition_qc": "pending",
+          "pacing_qc": "pending",
+          "drive_export_status": "NOT_STARTED"
+        },
+        "output_assets": {
+          "final_clean_mp4": "/api/assets/run_ad52556f_clean",
+          "final_captioned_mp4": "/api/assets/run_ad52556f_captioned",
+          "preview_mp4": "/api/assets/run_ad52556f_captioned",
+          "subtitles_srt": "/api/assets/run_ad52556f_captions.srt"
+        },
+        "qc_results": [],
+        "created_at": "2026-10-16T07:15:24.682Z",
+        "updated_at": "2026-10-16T07:15:24.682Z"
+      },
+      "created_at": "2026-10-16T07:15:24.682Z",
+      "updated_at": "2026-10-16T07:37:21.582Z"
     }
   },
   "workers": {
@@ -16524,6 +17072,149 @@
           "subtitles_only": false,
           "video_engine": "google_ai",
           "engine_label": "Google AI Cloud"
+        }
+      }
+    ],
+    "run_ad52556f": [
+      {
+        "id": "evt_cd2b848a",
+        "timestamp": "2026-10-16T07:15:24.687Z",
+        "type": "RUN_CREATED",
+        "payload": {
+          "run_id": "run_ad52556f",
+          "project_id": "proj_f0065806"
+        }
+      },
+      {
+        "id": "evt_b43fc218",
+        "timestamp": "2026-10-16T07:26:35.651Z",
+        "type": "VIDEO_ONLY_PIPELINE_STARTED",
+        "payload": {
+          "target_shots": [
+            "S01"
+          ],
+          "subtitles_only": false,
+          "video_engine": "google_ai",
+          "engine_label": "Google AI Cloud"
+        }
+      },
+      {
+        "id": "evt_d40f706b",
+        "timestamp": "2026-10-16T07:26:46.156Z",
+        "type": "VIDEO_ONLY_PIPELINE_STARTED",
+        "payload": {
+          "target_shots": [
+            "S01"
+          ],
+          "subtitles_only": false,
+          "video_engine": "google_ai",
+          "engine_label": "Google AI Cloud"
+        }
+      },
+      {
+        "id": "evt_1f758e59",
+        "timestamp": "2026-10-16T07:26:47.658Z",
+        "type": "VIDEO_ONLY_PIPELINE_STARTED",
+        "payload": {
+          "target_shots": [
+            "S01"
+          ],
+          "subtitles_only": false,
+          "video_engine": "comfyui_h3",
+          "engine_label": "ComfyUI MiniMax H3 (내부 GPU)"
+        }
+      },
+      {
+        "id": "evt_cf0ece7c",
+        "timestamp": "2026-10-16T07:26:48.360Z",
+        "type": "VIDEO_ONLY_PIPELINE_STARTED",
+        "payload": {
+          "target_shots": [
+            "S01"
+          ],
+          "subtitles_only": false,
+          "video_engine": "google_ai",
+          "engine_label": "Google AI Cloud"
+        }
+      },
+      {
+        "id": "evt_bd859858",
+        "timestamp": "2026-10-16T07:26:49.260Z",
+        "type": "VIDEO_ONLY_PIPELINE_STARTED",
+        "payload": {
+          "target_shots": [
+            "S01"
+          ],
+          "subtitles_only": false,
+          "video_engine": "google_ai",
+          "engine_label": "Google AI Cloud"
+        }
+      },
+      {
+        "id": "evt_806a7c53",
+        "timestamp": "2026-10-16T07:26:50.055Z",
+        "type": "VIDEO_ONLY_PIPELINE_STARTED",
+        "payload": {
+          "target_shots": [
+            "S01"
+          ],
+          "subtitles_only": false,
+          "video_engine": "google_ai",
+          "engine_label": "Google AI Cloud"
+        }
+      },
+      {
+        "id": "evt_b419b2f2",
+        "timestamp": "2026-10-16T07:28:55.567Z",
+        "type": "ENGINE_SWITCHED",
+        "payload": {
+          "new_engine": "comfyui_h3",
+          "engine_label": "ComfyUI MiniMax H3 (내부 GPU)"
+        }
+      },
+      {
+        "id": "evt_f67830e0",
+        "timestamp": "2026-10-16T07:31:00.168Z",
+        "type": "RENDER_READY_AWAITING_REVIEW",
+        "payload": {
+          "video_url": "/api/assets/run_ad52556f_captioned",
+          "notice": "영상 재생성이 완료되었습니다. 최종 검수실에서 전체 시청 후 승인을 진행하세요."
+        }
+      },
+      {
+        "id": "evt_51517d0b",
+        "timestamp": "2026-10-16T07:31:05.065Z",
+        "type": "RENDER_READY_AWAITING_REVIEW",
+        "payload": {
+          "video_url": "/api/assets/run_ad52556f_captioned",
+          "notice": "영상 재생성이 완료되었습니다. 최종 검수실에서 전체 시청 후 승인을 진행하세요."
+        }
+      },
+      {
+        "id": "evt_7251f309",
+        "timestamp": "2026-10-16T07:31:10.975Z",
+        "type": "RENDER_READY_AWAITING_REVIEW",
+        "payload": {
+          "video_url": "/api/assets/run_ad52556f_captioned",
+          "notice": "영상 재생성이 완료되었습니다. 최종 검수실에서 전체 시청 후 승인을 진행하세요."
+        }
+      },
+      {
+        "id": "evt_f1c763cf",
+        "timestamp": "2026-10-16T07:31:19.388Z",
+        "type": "RENDER_READY_AWAITING_REVIEW",
+        "payload": {
+          "video_url": "/api/assets/run_ad52556f_captioned",
+          "notice": "영상 재생성이 완료되었습니다. 최종 검수실에서 전체 시청 후 승인을 진행하세요."
+        }
+      },
+      {
+        "id": "evt_8f71ff19",
+        "timestamp": "2026-10-16T07:31:21.267Z",
+        "type": "RENDER_READY_AWAITING_REVIEW",
+        "payload": {
+          "video_url": "/api/assets/run_ad52556f_captioned",
+          "notice": "영상 재생성이 완료되었습니다. 최종 검수실에서 전체 시청 후 승인을 진행하세요."
         }
       }
     ]
