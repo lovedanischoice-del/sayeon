@@ -8,8 +8,8 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { db } from './db.js';
 import { generateStoryPlan, generateStartingImage, verifyStartingImage } from './geminiGateway.js';
-import { executeTestPipeline, executeVideoOnlyPipeline } from './testRunner.js';
-import type { ShotDefinition } from '../shared/schemas/types.js';
+import { executeTestPipeline, executeVideoOnlyPipeline, renderShotClip } from './testRunner.js';
+import type { ShotDefinition, VideoEngineType } from '../shared/schemas/types.js';
 
 export const apiRouter = Router();
 
@@ -245,6 +245,55 @@ apiRouter.post('/runs/:id/revisions', (req: Request, res: Response) => {
   });
 
   return res.json(updated);
+});
+
+// POST /api/runs/:id/shots/:shotId/render - 단일 컷 동기식 즉시 영상 생성 (Google AI / ComfyUI H3)
+apiRouter.post('/runs/:id/shots/:shotId/render', async (req: Request, res: Response) => {
+  try {
+    const run = db.getRun(req.params.id);
+    if (!run) return res.status(404).json({ error: 'Run not found' });
+
+    const shotId = req.params.shotId;
+    const shot = run.manifest.shots.find((s) => s.scene_id === shotId);
+    if (!shot) return res.status(404).json({ error: `Shot ${shotId} not found in run ${run.id}` });
+
+    const { video_engine } = req.body || {};
+    const chosenEngine: VideoEngineType = video_engine || shot.video_engine || run.video_engine || 'google_ai';
+
+    const assetsDir = path.join(process.cwd(), 'data', 'assets');
+    if (!fs.existsSync(assetsDir)) {
+      fs.mkdirSync(assetsDir, { recursive: true });
+    }
+
+    // Render this 1 shot immediately
+    await renderShotClip({
+      shot,
+      runId: run.id,
+      assetsDir,
+      engine: chosenEngine,
+    });
+
+    shot.video_engine = chosenEngine;
+    shot.status = 'video_ready';
+    shot.video_url = `/api/assets/${run.id}_${shot.scene_id}`;
+
+    const updated = db.updateRun(run.id, run);
+    db.logEvent(run.id, 'SHOT_VIDEO_RENDERED', {
+      scene_id: shot.scene_id,
+      video_engine: chosenEngine,
+      video_url: shot.video_url,
+    });
+
+    return res.json({
+      success: true,
+      message: `${shot.scene_id} 컷 영상이 [${chosenEngine === 'google_ai' ? 'Google AI Cloud' : 'ComfyUI H3'}]로 성공적으로 생성되었습니다.`,
+      shot,
+      run: updated,
+    });
+  } catch (err: any) {
+    console.error('[ShotRender] error:', err);
+    return res.status(500).json({ error: err.message });
+  }
 });
 
 // POST /api/runs/:id/rerender-video - 기획 및 시작 이미지 변경 없이 비디오만 재렌더링

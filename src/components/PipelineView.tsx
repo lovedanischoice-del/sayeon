@@ -76,6 +76,22 @@ export const PipelineView: React.FC<PipelineViewProps> = ({
     setIsRerendering(true);
     setShowRerenderMenu(false);
     try {
+      // If single shot target, use instant synchronous render for immediate UI update!
+      if (targetShots && targetShots.length === 1) {
+        const shotId = targetShots[0];
+        const res = await fetch(`/api/runs/${run.id}/shots/${shotId}/render`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            video_engine: engineOverride || currentEngine,
+          }),
+        });
+        if (res.ok) {
+          onRefresh();
+          return;
+        }
+      }
+
       await fetch(`/api/runs/${run.id}/rerender-video`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

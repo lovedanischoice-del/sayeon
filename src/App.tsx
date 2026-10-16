@@ -427,6 +427,24 @@ export default function App() {
             message: `${shots.join(', ')} 컷을 [${engine === 'google_ai' ? 'Google AI Cloud' : 'ComfyUI H3'}]로 렌더링하는 중...`,
             type: 'info',
           });
+          if (shots.length === 1) {
+            const shotId = shots[0];
+            const res = await fetch(`/api/runs/${activeRun.id}/shots/${shotId}/render`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ video_engine: engine }),
+            });
+            if (res.ok) {
+              fetchActiveRun();
+              setUiNotice({
+                message: `${shotId} 컷 영상이 [${engine === 'google_ai' ? 'Google AI Cloud' : 'ComfyUI H3'}]로 정상 생성되었습니다.`,
+                type: 'success',
+              });
+              setTimeout(() => setUiNotice(null), 4000);
+              return;
+            }
+          }
+
           const res = await fetch(`/api/runs/${activeRun.id}/rerender-video`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
