@@ -250,11 +250,38 @@ class StoryShortsWorker:
                         duration_sec=shot_duration
                     )
                     if ok and prompt_id:
-                        print(f"[Worker] ComfyUI prompt queued: {prompt_id}")
-                        self.comfyui.poll_prompt_history(prompt_id)
+                        print(f"[Worker] ComfyUI prompt queued: {prompt_id} (GPU RTX 5070 Ti 연산 시작)")
+                        success, outputs, err = self.comfyui.poll_prompt_history(prompt_id)
+                        if success and outputs:
+                            print(f"[Worker] ComfyUI prompt {prompt_id} 완료! 생성된 비디오 추출 중...")
+                            downloaded = False
+                            for nid, nout in outputs.items():
+                                for key in ["videos", "gifs", "images"]:
+                                    if key in nout and isinstance(nout[key], list):
+                                        for media in nout[key]:
+                                            fname = media.get("filename")
+                                            subfolder = media.get("subfolder", "")
+                                            mtype = media.get("type", "output")
+                                            if fname and (fname.endswith(".mp4") or fname.endswith(".webm") or fname.endswith(".gif")):
+                                                view_url = f"{self.comfyui.comfyui_url}/view?filename={fname}&subfolder={subfolder}&type={mtype}"
+                                                try:
+                                                    vr = requests.get(view_url, timeout=60)
+                                                    if vr.status_code == 200 and len(vr.content) > 1000:
+                                                        with open(local_video_path, 'wb') as vf:
+                                                            vf.write(vr.content)
+                                                        print(f"[Worker] 로컬 ComfyUI 실제 H3 비디오 저장 완료: {local_video_path} ({len(vr.content)} bytes)")
+                                                        downloaded = True
+                                                        break
+                                                except Exception as e:
+                                                    print(f"[Worker] ComfyUI 비디오 다운로드 실패: {e}")
+                                        if downloaded:
+                                            break
+                                if downloaded:
+                                    break
                 
-                # Write / ensure video stream file
-                self.renderer._write_test_mp4(local_video_path)
+                # If not downloaded from ComfyUI, write fallback stream
+                if not os.path.exists(local_video_path):
+                    self.renderer._write_test_mp4(local_video_path)
                 shot_videos[sid] = local_video_path
 
                 shot_updates.append({

@@ -18,6 +18,7 @@ import {
   User,
   Eye,
   RefreshCw,
+  Cpu,
 } from 'lucide-react';
 import type { Project, Run, ShotDefinition, PipelineStage } from '../../shared/schemas/types.js';
 
@@ -64,9 +65,28 @@ export const PipelineView: React.FC<PipelineViewProps> = ({
   const [showLogs, setShowLogs] = useState(false);
   const [isRerendering, setIsRerendering] = useState(false);
   const [showRerenderMenu, setShowRerenderMenu] = useState(false);
+  const [isQueueingWorker, setIsQueueingWorker] = useState(false);
 
   const currentEngine: 'comfyui_h3' | 'google_ai' =
     run?.video_engine || run?.manifest?.video_engine || 'comfyui_h3';
+
+  const handleQueueRealWorker = async () => {
+    if (!run) return;
+    setIsQueueingWorker(true);
+    try {
+      const res = await fetch(`/api/runs/${run.id}/queue-real-worker`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (res.ok) {
+        onRefresh();
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsQueueingWorker(false);
+    }
+  };
 
   const handleRerenderVideo = async (
     targetShots?: string[],
@@ -156,25 +176,37 @@ export const PipelineView: React.FC<PipelineViewProps> = ({
         </div>
 
         {/* Action Controls */}
-        <div className="flex flex-wrap items-center gap-2">
-          {run.flags?.render_ready ? (
+        <div className="flex flex-wrap items-center gap-2.5">
+          {run.flags?.render_ready && (
             <button
               onClick={onGoToReview}
               className="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-semibold text-sm shadow-lg shadow-rose-950/60 flex items-center gap-1.5 transition cursor-pointer"
             >
               <Eye className="w-4 h-4" /> 최종 검수실 이동
             </button>
-          ) : (
-            onRunTestPipeline && (
-              <button
-                onClick={() => onRunTestPipeline(currentEngine)}
-                disabled={run.status === 'RUNNING'}
-                className="px-3.5 py-2 rounded-lg bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-white font-semibold text-sm shadow-lg shadow-rose-950/50 flex items-center gap-1.5 transition cursor-pointer disabled:opacity-50"
-                title={`웹 내장 테스트 엔진으로 10샷 기획·이미지·영상(${currentEngine === 'google_ai' ? 'Google AI' : 'ComfyUI H3'})·자막·합성 즉시 실행`}
-              >
-                <span>⚡ 전체 테스트 파이프라인 가동</span>
-              </button>
-            )
+          )}
+
+          {/* 1. REAL LOCAL GPU WORKER PRODUCTION BUTTON */}
+          <button
+            onClick={handleQueueRealWorker}
+            disabled={isQueueingWorker || run.status === 'RUNNING'}
+            className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg shadow-emerald-950/60 flex items-center gap-2 transition cursor-pointer disabled:opacity-50 border border-emerald-400/40"
+            title="사용자 PC의 Python Worker(Real 모드)와 ComfyUI H3를 통해 실제 RTX 5070 Ti GPU로 렌더링 작업을 실행합니다"
+          >
+            <Cpu className="w-4 h-4 text-emerald-200" />
+            <span>{isQueueingWorker ? 'Worker 작업 큐 전송 중...' : '🖥️ 로컬 GPU Worker 실제 제작 가동'}</span>
+          </button>
+
+          {/* 2. SIMULATED TEST RUNNER BUTTON */}
+          {onRunTestPipeline && (
+            <button
+              onClick={() => onRunTestPipeline(currentEngine)}
+              disabled={run.status === 'RUNNING'}
+              className="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-xs border border-slate-700 flex items-center gap-1.5 transition cursor-pointer disabled:opacity-50"
+              title="로컬 GPU 연산 없이 브라우저에서 5초 만에 빠른 흐름 점검용으로 FFmpeg 모의 비디오를 생성합니다"
+            >
+              <span>⚡ 웹 모의 테스트 (FFmpeg 가상 시연)</span>
+            </button>
           )}
 
           {shots.length > 0 && (

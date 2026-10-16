@@ -296,6 +296,38 @@ apiRouter.post('/runs/:id/shots/:shotId/render', async (req: Request, res: Respo
   }
 });
 
+// POST /api/runs/:id/queue-real-worker - 실제 로컬 GPU Worker(Python + ComfyUI H3) 작업 대기열에 등록
+apiRouter.post('/runs/:id/queue-real-worker', (req: Request, res: Response) => {
+  const run = db.getRun(req.params.id);
+  if (!run) return res.status(404).json({ error: 'Run not found' });
+
+  // Reset lease and assign to QUEUED state for Python Worker
+  run.status = 'QUEUED';
+  const hasImages = run.manifest.shots.some((s) => s.status === 'image_ready' || s.start_image_asset_id);
+  run.current_stage = hasImages ? 'VIDEOS' : 'PLAN';
+  run.video_engine = 'comfyui_h3';
+  run.manifest.video_engine = 'comfyui_h3';
+  run.active_worker_id = undefined;
+  run.lease_token = undefined;
+  run.lease_expires_at = undefined;
+  run.flags.render_ready = false;
+  run.flags.editing_complete = false;
+
+  const updated = db.updateRun(run.id, run);
+  db.logEvent(run.id, 'QUEUED_FOR_REAL_WORKER', {
+    stage: run.current_stage,
+    worker_mode: 'real',
+    engine: 'comfyui_h3',
+    msg: '로컬 GPU Worker(Python + ComfyUI H3) 작업 대기열에 정식 등록되었습니다.',
+  });
+
+  return res.json({
+    success: true,
+    message: '로컬 GPU Worker(Python + ComfyUI H3) 대기열에 등록되었습니다. 로컬 Worker가 작업을 즉시 수신합니다.',
+    run: updated,
+  });
+});
+
 // POST /api/runs/:id/rerender-video - 기획 및 시작 이미지 변경 없이 비디오만 재렌더링
 apiRouter.post('/runs/:id/rerender-video', (req: Request, res: Response) => {
   const run = db.getRun(req.params.id);

@@ -13420,7 +13420,7 @@
         "pacing_qc": "pending",
         "drive_export_status": "NOT_STARTED"
       },
-      "video_engine": "google_ai",
+      "video_engine": "comfyui_h3",
       "manifest": {
         "manifest_version": "1.0.0",
         "project_id": "proj_f0065806",
@@ -13464,7 +13464,7 @@
             "outgoing_link": "S02 연결",
             "continuity_risks": [],
             "reference_asset_ids": [],
-            "video_engine": "google_ai",
+            "video_engine": "comfyui_h3",
             "status": "video_ready",
             "qc_result_ids": [],
             "attempt_count": 0,
@@ -13776,7 +13776,7 @@
             "outgoing_link": "S10 연결",
             "continuity_risks": [],
             "reference_asset_ids": [],
-            "video_engine": "google_ai",
+            "video_engine": "comfyui_h3",
             "status": "video_ready",
             "qc_result_ids": [],
             "attempt_count": 0,
@@ -13815,7 +13815,7 @@
             "outgoing_link": "엔딩",
             "continuity_risks": [],
             "reference_asset_ids": [],
-            "video_engine": "google_ai",
+            "video_engine": "comfyui_h3",
             "status": "video_ready",
             "qc_result_ids": [],
             "attempt_count": 0,
@@ -13923,7 +13923,7 @@
         "updated_at": "2026-10-16T07:15:24.682Z"
       },
       "created_at": "2026-10-16T07:15:24.682Z",
-      "updated_at": "2026-10-16T07:39:11.936Z"
+      "updated_at": "2026-10-16T07:50:40.233Z"
     }
   },
   "workers": {
@@ -17215,6 +17215,26 @@
         "payload": {
           "video_url": "/api/assets/run_ad52556f_captioned",
           "notice": "영상 재생성이 완료되었습니다. 최종 검수실에서 전체 시청 후 승인을 진행하세요."
+        }
+      },
+      {
+        "id": "evt_efcdb2d8",
+        "timestamp": "2026-10-16T07:48:59.057Z",
+        "type": "ENGINE_SWITCHED",
+        "payload": {
+          "new_engine": "comfyui_h3",
+          "engine_label": "ComfyUI MiniMax H3 (내부 GPU)"
+        }
+      },
+      {
+        "id": "evt_d552cb3d",
+        "timestamp": "2026-10-16T07:49:04.206Z",
+        "type": "VIDEO_ONLY_PIPELINE_STARTED",
+        "payload": {
+          "target_shots": "ALL",
+          "subtitles_only": false,
+          "video_engine": "comfyui_h3",
+          "engine_label": "ComfyUI MiniMax H3 (내부 GPU)"
         }
       }
     ]
